@@ -28,8 +28,8 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 //database connection
-const DB_URL = "mongodb://127.0.0.1:27017/wenderlust";
-//const DB_URL = process.env.ATLASDB_URL;
+//const DB_URL = "mongodb://127.0.0.1:27017/wenderlust";
+const DB_URL = process.env.ATLASDB_URL;
 mongoose.connect(DB_URL, {
   serverSelectionTimeoutMS: 30000, // 30 seconds timeout
   socketTimeoutMS: 45000,
