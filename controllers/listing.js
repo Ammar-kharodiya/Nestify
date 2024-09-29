@@ -13,6 +13,28 @@ module.exports.index = async (req, res, next) => {
     }
 };
 
+module.exports.search = async (req, res, next) => {
+    try {
+        let destination = req.query.search;
+        if (!destination || !destination.trim().length) {
+            return res.redirect("/listing");
+        }
+        let allListingData = await Listing.find({
+            $or: [
+                { location: { $regex: destination, $options: "i" } }, // Match location
+                { country: { $regex: destination, $options: "i" } }     // Match state
+            ]
+        });
+        if (!allListingData.length) {           
+            req.flash("error", `Listing isn't available at ${destination}`);
+            return res.redirect("/listing");
+        }
+        res.render("listing/index", { allListingData });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports.renderNewListing = (req, res, next) => {
     res.render("listing/new.ejs");
 };

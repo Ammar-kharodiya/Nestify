@@ -17,7 +17,7 @@ const userRouter = require("./routes/user.js");
 const passport = require("passport");
 const LocalStarategy = require("passport-local");
 const User = require("./models/user.js");
-
+const Listing = require("./models/listing.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -28,8 +28,8 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 //database connection
-//const DB_URL = "mongodb://127.0.0.1:27017/wenderlust";
-const DB_URL = process.env.ATLASDB_URL;
+const DB_URL = "mongodb://127.0.0.1:27017/wenderlust";
+//const DB_URL = process.env.ATLASDB_URL;
 mongoose.connect(DB_URL, {
   serverSelectionTimeoutMS: 30000, // 30 seconds timeout
   socketTimeoutMS: 45000,
@@ -84,10 +84,17 @@ app.use((req, res, next) => {
   next();
 })
 
+app.get("/", (req, res) => {
+  res.redirect("/listing");
+})
+
+
 //All Routes
 app.use("/listing", listingRoute);
 app.use("/listing/:id/review", reviewRoute);
 app.use("/", userRouter);
+
+
 
 //Middlewares
 app.all("*", (req, res, next) => {
