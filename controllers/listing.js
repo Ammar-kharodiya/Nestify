@@ -16,6 +16,7 @@ module.exports.index = async (req, res, next) => {
 module.exports.search = async (req, res, next) => {
     try {
         let destination = req.query.search;
+        console.log(destination);
         if (!destination || !destination.trim().length) {
             return res.redirect("/listing");
         }
